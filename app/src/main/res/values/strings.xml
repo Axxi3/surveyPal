@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SurveyPal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edt_title_about">Name</string>
+    <string name="edt_hint_about">Type your name</string>
+    <string name="edt_title_about_des">Description</string>
+    <string name="edt_hint_about_des">Describe your survey</string>
+    <string name="edt_title_about_new">Question</string>
+
+
+</resources>

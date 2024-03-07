@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "122292806442",
+    "project_id": "surveypal-e31b4",
+    "storage_bucket": "surveypal-e31b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122292806442:android:b285908a901f78e2977453",
+        "android_client_info": {
+          "package_name": "com.example.surveypal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "122292806442-ggeqtnd1t4amn2b5fv5lfek9acgn5c4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.surveypal",
+            "certificate_hash": "9ad118f268ddf3c38b07f59d2c8d6ff9235ba164"
+          }
+        },
+        {
+          "client_id": "122292806442-7vlfgiso58t4m15njnl58ppjfp1cnlm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5Z7W8M5IUlJ7pjj1IlXfGKJ2WKB6_Tks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "122292806442-7vlfgiso58t4m15njnl58ppjfp1cnlm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

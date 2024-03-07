@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Create_New_Survey">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.simform.customcomponent.SSCustomEdittextOutlinedBorder
+                    android:id="@+id/SurveyName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/white"
+
+
+                    android:inputType="text"
+
+                    app:custom_component_editText_hint="@string/edt_hint_about"
+                    app:custom_component_title="@string/edt_title_about"
+
+
+                    app:isErrorEnable="false"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.simform.customcomponent.SSCustomEdittextOutlinedBorder
+                    android:id="@+id/SurveyDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:inputType="text"
+                    app:custom_component_border_color="@color/black"
+
+                    app:custom_component_border_error_color="#FF0000"
+                    app:custom_component_editText_hint="@string/edt_hint_about_des"
+                    app:custom_component_title="@string/edt_title_about_des"
+                    app:custom_component_title_color="@color/color_brownish_grey_two"
+                    app:custom_component_title_error_color="@color/color_error"
+
+                    app:isErrorEnable="false"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/SurveyName" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addQuestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/done"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+
+            android:text="Done"
+            android:textAlignment="center"
+
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/addQuestions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/addQuestions" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/QuestionShower"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/addQuestions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/cancel_button"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:clickable="true"
+
+            android:text="cancel"
+            android:textAlignment="center"
+            android:textSize="12sp"
+
+
+            app:layout_constraintBottom_toBottomOf="@+id/addQuestions"
+            app:layout_constraintEnd_toStartOf="@+id/addQuestions"
+            app:layout_constraintStart_toEndOf="@+id/done"
+            app:layout_constraintTop_toTopOf="@+id/addQuestions" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cardView3" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
