@@ -1,5 +1,6 @@
 package com.example.surveypal.Fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.surveypal.Adapter.SurveyQuestionContainerAdapter
 import com.example.surveypal.DataModels.AttemptedSurveys
 import com.example.surveypal.DataModels.Survey
+import com.example.surveypal.DataModels.SurveyQuestions
 import com.example.surveypal.R
 import com.example.surveypal.databinding.FragmentSurveyBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -41,19 +43,37 @@ class Survey : Fragment() {
         auth=FirebaseAuth.getInstance()
         val surveys: Survey? = activity?.intent?.getParcelableExtra("surveys")
         val surveyID: String? = activity?.intent?.getStringExtra("surveyID")
-        binding.appCompatButton.setOnClickListener {
-            binding.appCompatButton.startAnimation()
-            onSaveButtonClick()
-        }
+//        binding.appCompatButton.setOnClickListener {
+//            binding.appCompatButton.startAnimation()
+//            onSaveButtonClick()
+//        }
 
         args?.let { args ->
             val question = args.Surveys.Questions
-
+            binding.question.text=args.Surveys.Title
+            adapter = SurveyQuestionContainerAdapter(requireContext(), emptyList<SurveyQuestions>())
             if (question != null ) {
-                adapter= SurveyQuestionContainerAdapter(requireContext(),question)
-                adapter.setOnOptionSelectedListener {Option, index ->
-                    selectedOptions.add(index,Option)
+                var i=0
+                sendQuestion(i,question)
+
+                binding.appCompatButton.setOnClickListener {
+                    adapter.setOnOptionSelectedListener {Option, index ->
+                        selectedOptions.add(index,Option)
+                    }
+
+                    Log.d(TAG, "onViewCreated: "+"index ${i} question size ${question.size}")
+                    if (i >= question.size-1) {
+
+                        Log.d(TAG, "onViewCreated: Called")
+                        binding.appCompatButton.startAnimation()
+                        onSaveButtonClick()
+                        return@setOnClickListener
+                    }
+                    i+=1
+                    sendQuestion(i,question)
+
                 }
+
 
                 binding.recyclerView.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
                 binding.recyclerView.adapter=adapter
@@ -61,11 +81,23 @@ class Survey : Fragment() {
         }
     }
 
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun sendQuestion(i: Int, questionOne: List<SurveyQuestions>) {
+
+        // Update adapter data
+        adapter.setData(questionOne[i])
+        Log.d(TAG, "sendQuestion: "+ questionOne[i])
+        // Notify RecyclerView that data set has changed
+        adapter.notifyDataSetChanged()
+    }
+
     fun onSaveButtonClick() {
 
 
         // Check if all options are selected
-        if (selectedOptions.size == args.Surveys.Questions?.size) {
+        if (selectedOptions.size == args.Surveys.Questions?.size!! -1) {
             Log.d(TAG, "onSaveButtonClick: "+ selectedOptions.toString())
 
             saveData(selectedOptions)

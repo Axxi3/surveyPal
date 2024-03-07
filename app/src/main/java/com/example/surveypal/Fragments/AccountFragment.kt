@@ -127,6 +127,7 @@ class AccountFragment : Fragment() {
                             val surveyID = snapshot.key
                             val surveyTitle = snapshot.child("title").getValue(String::class.java)
                             val surveyDescription = snapshot.child("description").getValue(String::class.java)
+                            val surveyImage = snapshot.child("Image").getValue(String::class.java)
 
                             // Process survey questions
                             val questions: MutableList<SurveyQuestions> = mutableListOf()
@@ -139,9 +140,14 @@ class AccountFragment : Fragment() {
                                 val surveyQuestion = SurveyQuestions(questionName!!, options)
                                 questions.add(surveyQuestion)
                             }
-
+                            val survey:Survey
                             // Create a Survey object and add it to the list
-                            val survey = Survey(surveyTitle!!, surveyDescription!!, questions, surveyID!!)
+                            if(surveyImage!==null){
+                                survey= Survey(surveyTitle!!, surveyDescription!!, questions, surveyID!!,surveyImage)
+                            }  else {
+                                survey= Survey(surveyTitle!!, surveyDescription!!, questions, surveyID!!,null)
+                            }
+
                             surveys.add(survey)
                         }
 

@@ -9,9 +9,10 @@ data class Survey(
     var Title: String,
     var description:String,
     var Questions: List<SurveyQuestions>?,
-    var SurveyMakerID:String
+    var SurveyMakerID:String,
+    var Image: String?
 ) : Parcelable {
-    constructor() : this("","", listOf(),"")
+    constructor() : this("","", listOf(),"",null)
 }
 
 

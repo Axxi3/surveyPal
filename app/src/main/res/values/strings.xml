@@ -7,6 +7,6 @@
     <string name="edt_title_about_des">Description</string>
     <string name="edt_hint_about_des">Describe your survey</string>
     <string name="edt_title_about_new">Question</string>
-
+    <string name="passDetails">passDetails</string>
 
 </resources>

@@ -12,13 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.surveypal.Adapter.ActiveSureysAdapter
 import com.example.surveypal.DataModels.Survey
-import com.example.surveypal.DataModels.SurveyQuestions
 import com.example.surveypal.R
 import com.example.surveypal.databinding.FragmentHomePageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
@@ -28,6 +26,7 @@ class HomePage : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
     private lateinit var adapter:ActiveSureysAdapter
+    private lateinit var data: MutableList<Survey>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,11 +64,15 @@ class HomePage : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 // This method is called when the text in the search view changes
-                if (!newText.isNullOrEmpty()) {
-                    // If there is text in the search view, log it
+                if (newText.isNullOrEmpty()) {
+                    // If newText is null or empty, it means nothing is written in the search view
+                    Log.d("SearchQuery", "No text entered")
+                    adapter.setData(data)
+                    adapter.notifyDataSetChanged()
+                } else {
+                    // If there is text in the search view, log it and perform the desired action
                     Log.d("SearchQuery", "Text: $newText")
-
-                    getSurveys(newText)
+                    getSurveys(newText) // Example: Perform a search based on the entered text
                 }
                 return true // Return true to indicate that the query has been handled
             }
@@ -97,12 +100,25 @@ class HomePage : Fragment() {
                         surveysIDs.add(surveySnapshot.key!!)
                     }
                 }
+
+                data=surveysList
                     adapter= ActiveSureysAdapter(requireContext(),surveysList,surveysIDs)
                 adapter.OnClick= { surveys, surveyID ->
+                    
+                    if(auth.uid.isNullOrEmpty()){
+                        Toast.makeText(
+                            requireContext(),
+                            "Please Login to Attempt Survey",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    } else {
+                        val action = HomePageDirections.actionHomePageToSurvey(surveys, surveyID)
+                        findNavController().navigate(action)
+                    }
 
 
-                    val action = HomePageDirections.actionHomePageToSurvey(surveys, surveyID)
-                    findNavController().navigate(action)
+
                 }
 
                 binding.surveysContainer.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
@@ -123,58 +139,23 @@ class HomePage : Fragment() {
 
     private fun getSurveys(search:String) {
 
-        binding.progressBar3.visibility=View.VISIBLE
-        // Assuming you have a DatabaseReference pointing to your database
-        val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
+        if(search.isNullOrEmpty() || search ==""){
+            adapter.setData(data)
+            adapter.notifyDataSetChanged()
+        }
+        val searchData:MutableList<Survey> = mutableListOf()
+    if(data!==null) {
+        for(result in data){
+            if(result.Title.toLowerCase().contains(search.toLowerCase())==true){
+                searchData.add(result)
+            }
 
-        // Get the current user's ID
-        val userID = FirebaseAuth.getInstance().currentUser?.uid
-
-        // If userID is not null, construct and execute the query
-        userID?.let { uid ->
-            // Construct the query to filter data based on userID
-            databaseReference.child("Active Surveys").orderByChild("title").equalTo(search)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // Iterate through the dataSnapshot to access the filtered data
-                        val surveys: MutableList<Survey> = mutableListOf()
-
-                        for (snapshot in dataSnapshot.children) {
-                            // Extract survey data
-                            val surveyID = snapshot.key
-                            val surveyTitle = snapshot.child("title").getValue(String::class.java)
-                            val surveyDescription = snapshot.child("description").getValue(String::class.java)
-
-                            // Process survey questions
-                            val questions: MutableList<SurveyQuestions> = mutableListOf()
-                            for (questionSnapshot in snapshot.child("questions").children) {
-                                val questionName = questionSnapshot.key
-                                val options: MutableList<String> = mutableListOf()
-                                questionSnapshot.child("options").children.forEach {
-                                    options.add(it.getValue(String::class.java)!!)
-                                }
-                                val surveyQuestion = SurveyQuestions(questionName!!, options)
-                                questions.add(surveyQuestion)
-                            }
-
-                            // Create a Survey object and add it to the list
-                            val survey = Survey(surveyTitle!!, surveyDescription!!, questions, surveyID!!)
-                            surveys.add(survey)
-                        }
-
-                        // Here you can use the `surveys` list as needed
-                        // For example, you can pass it to a ViewModel or update UI components
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        // Handle error
-                        println("Database Error: ${databaseError.message}")
-                    }
-                })
         }
 
-        // Hide progress bar after getting surveys
-        binding.progressBar3.visibility = View.GONE
+        adapter.setData(searchData)
+        adapter.notifyDataSetChanged()
+    }
+
     }
 
 

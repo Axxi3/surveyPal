@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SurveyQuestions(
     var QuestionName: String,
-    var Options: List<String>?
+    var Options: List<String>?,
+
 ) : Parcelable {
     constructor() : this("", listOf())
 }

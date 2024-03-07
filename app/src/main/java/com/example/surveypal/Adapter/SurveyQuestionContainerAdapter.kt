@@ -8,13 +8,12 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.surveypal.DataModels.Survey
 import com.example.surveypal.DataModels.SurveyQuestions
 import com.example.surveypal.R
 
 class SurveyQuestionContainerAdapter(
     private val context: Context,
-    private val dataList: List<SurveyQuestions>?
+    private var dataList: List<SurveyQuestions>
 ) : RecyclerView.Adapter<SurveyQuestionContainerAdapter.ViewHolder>() {
 
     private var onOptionSelected: ((String, Int) -> Unit)? = null
@@ -26,7 +25,7 @@ class SurveyQuestionContainerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data = dataList?.get(position)
+        val data = dataList[position]
         if (data != null) {
             holder.title.text = data.QuestionName
 
@@ -46,7 +45,7 @@ class SurveyQuestionContainerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return dataList?.size ?: 0
+        return 1
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,5 +56,9 @@ class SurveyQuestionContainerAdapter(
     // Setter method for the callback
     fun setOnOptionSelectedListener(listener: (String, Int) -> Unit) {
         this.onOptionSelected = listener
+    }
+    fun setData(dataList: SurveyQuestions) {
+        this.dataList = listOf(dataList)
+        notifyDataSetChanged()
     }
 }
